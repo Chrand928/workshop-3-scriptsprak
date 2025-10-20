@@ -20,7 +20,7 @@ INACTIVE USERS (No login >30 days)
 ----------------------------------------
 "@
 
-# Collects data and filters and formats it to make a list of inactive users
+# Collects data and filters it to make a list of inactive users
 $inactiveUsers = $data.users | Where-Object {
     ([datetime]$_.lastLogon) -lt (Get-Date).AddDays(-30)
 } | Select-Object @{Name = "Username"; Expression = { $_.samAccountName } },
@@ -32,11 +32,27 @@ $inactiveUsers = $data.users | Where-Object {
 # Sorts the output showing most inactive users at the top
 Sort-Object -Property "Days Inactive" -Descending
 
+# Formats the list to make it look more professional and adds it to the report
 $inactiveList = $inactiveUsers | Format-Table -AutoSize | Out-String
 $report += $inactiveList
 
+$report += @"
 
+----------------------------------------
+USERS PER DEPARTMENT
+----------------------------------------
+"@
 
+# Groups users by department and formats it to a list with departments in alphabetical order and adds it to the report
+$usersByDepartment = $data.users | 
+Group-Object -Property department | 
+Select-Object Name, Count | 
+Sort-Object -Property Name
+
+$departmentList = $usersByDepartment | 
+Format-Table -AutoSize | Out-String
+
+$report += $departmentList
 
 
 
