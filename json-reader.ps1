@@ -59,6 +59,8 @@ $report += @"
 COMPUTERS PER SITE 
 ----------------------------------------
 "@
+
+# Groups computers per site and formats it to a list with site name alphabetical order and adds it to the report
 $computersPerSite = $data.computers | 
 Group-Object -Property site | 
 Select-Object Name, Count |
@@ -67,9 +69,30 @@ Sort-Object -Property site
 $computersPerSiteList = $computersPerSite | Format-Table -AutoSize | Out-String
 $report += $computersPerSiteList
 
+
+$report += @"
+----------------------------------------
+PASSWORD AGE
+----------------------------------------
+"@
+
+# Collects and sorts data on user password age to add to the report 
+$userPasswordAge = $data.users | Select-Object `
+@{Label = "Username"; Expression = { $_.samAccountName } }, `
+@{Label = "Last Updated"; Expression = { ((Get-Date) - [datetime]$_.passwordLastSet).Days } } | Sort-Object -Property "Last Updated" -Descending
+
+
+$passwordAgeList = $userPasswordAge | Format-Table -AutoSize | Out-String
+$report += $passwordAgeList
+
+
+
+
+
+
+# Writes the ad_audit_report.txt file
 $report | Out-File -FilePath "ad_audit_report.txt" -Encoding UTF8
 
+# Exports inactiveUsers to CSV
 $inactiveUsers | Export-Csv -Path "inactive_users.csv" -NoTypeInformation -Delimiter "," -Encoding UTF8
-
-
 

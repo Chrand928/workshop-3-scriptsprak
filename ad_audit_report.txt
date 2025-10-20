@@ -1,7 +1,7 @@
 ========================================
        ACTIVE DIRECTORY RAPPORT
 ========================================
-Generated: 2025-10-20 12:04:33
+Generated: 2025-10-20 13:26:03
 Domain: techcorp.local
 Export Date: 2025-10-14 06:00:00
 
@@ -40,5 +40,42 @@ Huvudkontor        8
 Kontor Malmö       3
 Lager              3
 Säkerhetskopia     2
+
+----------------------------------------
+PASSWORD AGE
+----------------------------------------
+Username     Last Updated
+--------     ------------
+admin_backup          292
+test_user             278
+eolsson               202
+nnils                 193
+mberg                 163
+jjohan                158
+qquentin              153
+jsvensson             148
+ffred                 141
+rrobert               127
+yynva                 122
+mmaria                111
+ddavid                 91
+ttomas                 87
+bbjorn                 66
+ppeter                 61
+vviktor                51
+aanders                49
+wwilma                 45
+ssara                  39
+eerik                  35
+hhelena                30
+kkarl                  24
+ccarl                  19
+oolof                  19
+zzara                  18
+iingrid                15
+uulrika                12
+ggunnar                10
+xxavier                 9
+llars                   8
 
 
