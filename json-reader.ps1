@@ -57,3 +57,9 @@ $report += $departmentList
 
 
 $report | Out-File -FilePath "ad_audit_report.txt" -Encoding UTF8
+
+$inactiveUsers | Export-Csv -Path "inactive_users.csv" -NoTypeInformation -Delimiter "," -Encoding UTF8
+
+
+
+
