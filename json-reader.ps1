@@ -37,7 +37,6 @@ $inactiveList = $inactiveUsers | Format-Table -AutoSize | Out-String
 $report += $inactiveList
 
 $report += @"
-
 ----------------------------------------
 USERS PER DEPARTMENT
 ----------------------------------------
@@ -55,11 +54,22 @@ Format-Table -AutoSize | Out-String
 $report += $departmentList
 
 
+$report += @"
+----------------------------------------
+COMPUTERS PER SITE 
+----------------------------------------
+"@
+$computersPerSite = $data.computers | 
+Group-Object -Property site | 
+Select-Object Name, Count |
+Sort-Object -Property site
+
+$computersPerSiteList = $computersPerSite | Format-Table -AutoSize | Out-String
+$report += $computersPerSiteList
 
 $report | Out-File -FilePath "ad_audit_report.txt" -Encoding UTF8
 
 $inactiveUsers | Export-Csv -Path "inactive_users.csv" -NoTypeInformation -Delimiter "," -Encoding UTF8
-
 
 
 
