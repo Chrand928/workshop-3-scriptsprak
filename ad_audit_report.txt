@@ -1,7 +1,7 @@
 ========================================
        ACTIVE DIRECTORY RAPPORT
 ========================================
-Generated: 2025-10-20 13:26:03
+Generated: 2025-10-20 14:18:42
 Domain: techcorp.local
 Export Date: 2025-10-14 06:00:00
 
@@ -58,17 +58,17 @@ ffred                 141
 rrobert               127
 yynva                 122
 mmaria                111
-ddavid                 91
+ddavid                 92
 ttomas                 87
 bbjorn                 66
 ppeter                 61
 vviktor                51
 aanders                49
 wwilma                 45
-ssara                  39
+ssara                  40
 eerik                  35
 hhelena                30
-kkarl                  24
+kkarl                  25
 ccarl                  19
 oolof                  19
 zzara                  18
@@ -77,5 +77,21 @@ uulrika                12
 ggunnar                10
 xxavier                 9
 llars                   8
+
+----------------------------------------
+LEAST ACTIVE COMPUTERS
+----------------------------------------
+Computer ID   Site           Last Logon
+-----------   ----           ----------
+OLD-PC-001    Huvudkontor    2025-07-15
+PC-LAG-003    Lager          2025-08-10
+LAPTOP-HK-002 Huvudkontor    2025-08-30
+PC-MAL-003    Kontor Malmö   2025-09-05
+TEST-VM-001   Datacenter     2025-09-20
+PC-HK-005     Huvudkontor    2025-10-12
+PC-LAG-002    Lager          2025-10-13
+PC-HK-003     Huvudkontor    2025-10-13
+PC-MAL-001    Kontor Malmö   2025-10-13
+PC-DR-001     Säkerhetskopia 2025-10-13
 
 

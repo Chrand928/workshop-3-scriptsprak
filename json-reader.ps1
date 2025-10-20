@@ -81,11 +81,25 @@ $userPasswordAge = $data.users | Select-Object `
 @{Label = "Username"; Expression = { $_.samAccountName } }, `
 @{Label = "Last Updated"; Expression = { ((Get-Date) - [datetime]$_.passwordLastSet).Days } } | Sort-Object -Property "Last Updated" -Descending
 
-
 $passwordAgeList = $userPasswordAge | Format-Table -AutoSize | Out-String
 $report += $passwordAgeList
 
 
+$report += @"
+----------------------------------------
+LEAST ACTIVE COMPUTERS
+----------------------------------------
+"@
+
+$sortedComputers = $data.computers | Sort-Object -Property lastLogon
+
+$leastActiveComputers = $sortedComputers | Select-Object -First 10 `
+@{Label = "Computer ID"; Expression = { $_.name } }, `
+@{Label = "Site"; Expression = { $_.site } }, `
+@{Label = "Last Logon"; Expression = { ([datetime]$_.lastLogon).ToString("yyyy-MM-dd") } } `
+
+$leastActiveComputersList = $leastActiveComputers | Format-Table -AutoSize | Out-String
+$report += $leastActiveComputersList
 
 
 
