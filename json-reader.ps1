@@ -6,8 +6,23 @@ $now = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
 # Collects export_date from the json file and formats it
 $formattedExportDate = [datetime]::Parse($data.export_date).ToString("yyyy-MM-dd HH:mm:ss")
 
+# Function to locate inactive accounts with parameters for amount of days
+function Get-InactiveAccounts {
+    param (
+        [int]$days = 30
+    )
+
+    $inactiveUsers = $data.users | Where-Object {
+        ([datetime]$_.lastLogon) -lt (Get-Date).AddDays(-$days)
+    } | Select-Object samAccountName, displayName, department, lastLogon, 
+    @{Label = "Days Inactive"; Expression = { ((Get-Date) - [datetime]$_.lastLogon).Days } }
+
+    return $inactiveUsers
+}
+
+
 # Start of the report
-$report = @"
+$report += @"
 ========================================
        ACTIVE DIRECTORY RAPPORT
 ========================================
@@ -15,6 +30,33 @@ Generated: $($now)
 Domain: $($data.domain)
 Export Date: $formattedExportDate
 
+----------------------------------------
+EXECUTIVE SUMMARY
+----------------------------------------
+
+"@
+
+#
+$accountsExpiring = ($data.users | Where-Object {
+        ([datetime]$_.lastLogon) -lt (Get-Date).AddDays(30) -and ([datetime]$_.accountExpires) -gt (Get-Date)
+    }).Count
+#
+$inactiveComputers = ($data.users | Where-Object {
+        ([datetime]$_.lastLogon) -lt (Get-Date).AddDays(-30)
+    }).Count
+#
+$oldPasswords = ($data.users | Where-Object {
+        ([datetime]$_.passwordLastSet) -lt (Get-Date).AddDays(-90) -and $_.passwordNeverExpires -eq $false
+    }).Count
+
+$report += @"
+⚠ CRITICAL: $accountsExpiring user accounts expiring within 30 days
+⚠ WARNING: $inactiveComputers computers not seen in 30+ days
+⚠ SECURITY: $oldPasswords users with passwords older than 90 days
+
+"@
+
+$report += @"
 ----------------------------------------
 INACTIVE USERS (No login >30 days)
 ----------------------------------------
@@ -100,8 +142,6 @@ $leastActiveComputers = $sortedComputers | Select-Object -First 10 `
 
 $leastActiveComputersList = $leastActiveComputers | Format-Table -AutoSize | Out-String
 $report += $leastActiveComputersList
-
-
 
 
 # Writes the ad_audit_report.txt file
